@@ -80,6 +80,7 @@ insert into coaching_history (Coach_Team_ID, Coach_ID, Team_Name) values ('45892
 insert into coaching_history (Coach_Team_ID, Coach_ID, Team_Name) values ('8888777878', '4802668422', 'Stringtough');
 insert into coaching_history (Coach_Team_ID, Coach_ID, Team_Name) values ('1234567897', '1782895620', 'Bitchip');
 
+
 create table player (
 	Player_ID bigint,
     Player_Name varchar(100),
@@ -100,6 +101,22 @@ insert into player (Player_ID, Player_Name, Player_Age, Current_Team) values ('2
 insert into player (Player_ID, Player_Name, Player_Age, Current_Team) values ('0182113876', 'Thedric Sommerly', 29, 'Stringtough');
 insert into player (Player_ID, Player_Name, Player_Age, Current_Team) values ('8450135486', 'Dolli Grossier', 26, 'Bitchip');
 insert into player (Player_ID, Player_Name, Player_Age, Current_Team) values ('4710689954', 'Odelle Torra', 19, 'Prodder');
+
+create table player_history (
+	Player_Team_ID bigint,
+    Player_ID bigint,
+    Team_Played_On varchar(100),
+		primary key (Player_Team_ID),
+        constraint PT_Player_ID_fk foreign key (Player_ID) references player (Player_ID),
+        constraint PT_Team_Name_fk foreign key (Team_Played_On) references team (Team_Name));
+
+insert into player_history (Player_Team_ID, Player_ID, Team_Played_On) values ('7568152571', '7635949004', 'Konklab');
+insert into player_history (Player_Team_ID, Player_ID, Team_Played_On) values ('8411455816', '7635949004', 'Stringtough');
+insert into player_history (Player_Team_ID, Player_ID, Team_Played_On) values ('4983763892', '9410824079', 'Prodder');
+insert into player_history (Player_Team_ID, Player_ID, Team_Played_On) values ('2934552973', '2440578495', 'Konklab');
+insert into player_history (Player_Team_ID, Player_ID, Team_Played_On) values ('5892144788', '2440578495', 'Konklab');
+insert into player_history (Player_Team_ID, Player_ID, Team_Played_On) values ('8777888878', '9410824079', 'Stringtough');
+insert into player_history (Player_Team_ID, Player_ID, Team_Played_On) values ('3456127897', '2299924620', 'Bitchip');
 
 create table player_matches (
 	Player_Match_ID bigint,
@@ -182,3 +199,9 @@ insert into attendance (Attendance_ID, Match_ID, Field_ID, Attendance) values ('
 # Queries
 # View all upcoming matches in all fields.
 select * from matches WHERE Match_Date > sysdate();
+# View played matches and their scores
+select Home_Team, Home_Score, Away_Team, Away_Score from matches where Match_Date < sysdate();
+# Search by team name to view played and upcoming matches
+select * from matches where Home_Team = "Stringtough" or Away_Team = "Stringtough";
+# Search a player to get the player’s information such as previous teams (if any) and current team.
+select distinct p.*, ph.Team_Played_On from player p join player_history ph using(Player_ID) where Player_Name = "Myriam Penna"; 
