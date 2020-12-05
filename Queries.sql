@@ -7,6 +7,8 @@ select Home_Team, Home_Score, Away_Team, Away_Score from matches where Match_Dat
 select * from matches where Home_Team = "Stringtough" or Away_Team = "Stringtough";
 # Search a player to get the player’s information such as previous teams (if any) and current team.
 select distinct p.*, ph.Team_Played_On from player p join player_history ph using(Player_ID) where Player_Name = "Myriam Penna"; 
+# Search a player name to get his/her upcoming matches.
+select distinct p.Player_Name, pm.Match_ID, m.Home_Team, m.Away_Team, m.Match_Date from player p join player_matches pm using (Player_ID) join matches m using(Match_ID) where Player_Name = "Myriam Penna" and m.Match_Date > sysdate(); 
 
 #Search by coach to get the coach’s information such as previous teams (if any) and current team.
 select distinct c.*, ch.Team_Name from coach c join coaching_history ch using (Coach_ID) where Coach_Name = 'Brigitta Ferrulli';
